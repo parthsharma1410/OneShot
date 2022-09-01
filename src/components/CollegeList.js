@@ -5,7 +5,7 @@ import Link from "react-router-dom";
 import img1 from '../public/img1.jpg'
 import { useContext, useEffect, useState } from "react";
 import CollegeAPIHelper from "../CollegeApiHelper"
-import { Chart } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 export default function CollegeList() {
     const [colleges, setColleges] = useState([])
@@ -20,42 +20,20 @@ export default function CollegeList() {
     const [label, setLabel] = useState([])
     const [sData, setSData] = useState([])
 
+    let labels1 = []
+    let labels2 = []
+
     useEffect(() => {
         const fetchCollegeAndSetColleges = async () => {
           const colleges = await CollegeAPIHelper.getAllColleges()
-          console.log(colleges)
+          colleges.map(({name, strength}, i) => (labels1.push(colleges[i].name)))
+          colleges.map(({name, strength}, i) => (labels2.push(colleges[i].strength)))
+        //   console.log(colleges)
           setColleges(colleges)
-        }
-        // setLabel(current => [..current, ])
-        const setLabelValues = async () => {
-            colleges.map(({ _id, id,
-                name,
-                year,
-                city,
-                state,
-                country,
-                strength,
-                courses}, i) => (
-                    setLabel([...label, colleges[i].name])
-                    // setData([...data, colleges[i].strength])
-                ))
-        }
-        const setDataValues = async () => {
-            colleges.map(({ _id, id,
-                name,
-                year,
-                city,
-                state,
-                country,
-                strength,
-                courses}, i) => (
-                    // setData([...label, colleges[i].name])
-                    setSData([...sData, colleges[i].strength])
-                ))
+          console.log(labels1)
+          console.log(labels2)
         }
         fetchCollegeAndSetColleges()
-        setDataValues()
-        setLabelValues()
       }, [])
     
       
@@ -90,21 +68,64 @@ export default function CollegeList() {
     //   const labels = [];
     
 
-      const val = {
-        labels: label,
-        datasets: [{
-          label: 'Collegewise strength',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: sData,
-        }]
-      };
+    const [chartData, setChartData]  = useState({});    
+    // const [collegeName, setCollegeName] = useState([]);    
+    // const [collegeState, setCollegeState] = useState([]);
     
-      const config = {
-        type: 'doughnut',
-        data: sData,
-        options: {}
-      };
+    
+const Chart = () => {
+    // colleges.map(({ _id, id,
+    //     name,
+    //     year,
+    //     city,
+    //     state,
+    //     country,
+    //     strength,
+    //     courses}, i) => (
+    //         labels1.push(colleges[i].name)
+    //         // labels2.push(colleges[i].state)
+    //     ))
+    //     colleges.map(({ _id, id,
+    //         name,
+    //         year,
+    //         city,
+    //         state,
+    //         country,
+    //         strength,
+    //         courses}, i) => (
+    //             // labels1.push(colleges[i].name)
+    //             labels2.push(colleges[i].strength)
+    //         ))
+    //         console.log(labels1)
+    //         console.log(labels2)
+    setChartData({
+    labels: labels1,
+    datasets: [{
+                      label: '% of strength',
+                      data: labels2,
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)'
+                      ],
+                      borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)'
+                      ],
+                      borderWidth: 1
+                  }]
+           });
+}
+  useEffect(() => {
+     Chart();
+   }, []);
 
     //   const myChart = new Chart(
     //     document.getElementById('myChart'),
@@ -115,7 +136,7 @@ export default function CollegeList() {
         <div className="container">
         <div className='flexbox'>
        <form className='form animate__animated animate__fadeIn animate__delay-1s'>
-       <div class="mb-3">
+       <div className="mb-3">
               <label for="id" class="form-label">College ID</label>
                <input type="number" class="form-control" id="id" aria-describedby="id" onChange={({ target }) => setId(target.value)}/>
                 </div>
@@ -148,6 +169,7 @@ export default function CollegeList() {
                     <input type="string" class="form-control" id="courses" onChange={({ target }) => setCourses(target.value)}/>
                 </div>
                 <button type="submit" class="btn btn-primary" onClick={createCollege}>Submit</button>
+                <button type="submit" class="btn btn-primary" onClick={Chart}>Display Chart</button>
             </form>
             {/* <div className='image'>
                 <img src={popcorn} alt='MovieList' />
@@ -196,9 +218,21 @@ export default function CollegeList() {
             <button className='btn btn-danger' id='crossButton' onClick={e => deleteCollege(e, _id)}> Delete </button>
            </div>
         ))}
-        <div>
-            <canvas id="myChart"></canvas>
-        </div>
+         <Doughnut
+                    data={chartData}
+                    options={{
+                        responsive:true,
+                        title: { text: "THICKNESS SCALE", display: true },
+                        scales:{
+                            yAxes:[ {
+                                ticks:{
+                                    beginAtZero: true
+                                }
+                            }
+                            ]
+                        }
+                    }}
+                  />
 
     </div>
     

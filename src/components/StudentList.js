@@ -23,31 +23,8 @@ export default function StudentList() {
           console.log(students)
           setStudents(students)
         }
-        // setLabel(current => [..current, ])
-        const setLabelValues = async () => {
-            students.map(({ _id,
-                id,
-  name,
-  year,
-  collegeId,
-  skills}, i) => (
-                    setLabel([...label, students[i].name])
-                    // setData([...data, colleges[i].strength])
-                ))
-        }
-        const setDataValues = async () => {
-            students.map(({ _id, id,
-                name,
-                year,
-                collegeId,
-                skills}, i) => (
-                    // setData([...label, colleges[i].name])
-                    setSData([...sData, students[i].year])
-                ))
-        }
+        
         fetchStudentAndSetStudents()
-        setDataValues()
-        setLabelValues()
       }, [])
     
       
@@ -79,21 +56,8 @@ export default function StudentList() {
     //   const labels = [];
     
 
-      const val = {
-        labels: label,
-        datasets: [{
-          label: 'Collegewise strength',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: sData,
-        }]
-      };
-    
-      const config = {
-        type: 'doughnut',
-        data: sData,
-        options: {}
-      };
+      
+      
 
     //   const myChart = new Chart(
     //     document.getElementById('myChart'),
@@ -170,9 +134,7 @@ export default function StudentList() {
             <button className='btn btn-danger' id='crossButton' onClick={e => deleteStudent(e, _id)}> Delete </button>
            </div>
         ))}
-        <div>
-            <canvas id="myChart"></canvas>
-        </div>
+        
 
     </div>
     
