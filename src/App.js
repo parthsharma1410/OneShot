@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CollegeList from './components/CollegeList'
+import StudentList from './components/StudentList'
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Container, Nav } from "react-bootstrap";
+import Home from "./components/Home";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    // <GraphChart/>
+      <Container
+        className="align-items-center justify-content-center"
+        style={{ minHeight: "100vh" }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Router>
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/college" element={<CollegeList />} />
+              <Route path='/student' element={<StudentList />}/>
+            </Routes>
+        </Router>
+      </Container>
   );
 }
 
