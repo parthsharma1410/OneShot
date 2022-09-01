@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# OneShot.Ai 
+
+I have successfully created the backend and api endpoints in nodejs and database in mongodb. 
+Using Reactjs for frontend, I was successfully able to display a list of colleges and schools, incorporating states and hooks.
+Incomplete tasks include : Implementation of graphs, querying the db for search, hosting the website
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
